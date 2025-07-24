@@ -38,6 +38,8 @@ class Command(BaseCommand):
                     "alpha3Code": row["alpha3Code"],
                     "population": row["population"],
                     "region": region,
+                    "topLevelDomain": (row["topLevelDomain"]+[''])[0], # Get first top level domain from list or default to empty string
+                    "capital" : row["capital"]
                 },
             )
 
