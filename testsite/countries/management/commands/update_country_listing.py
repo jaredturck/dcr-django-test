@@ -1,5 +1,6 @@
 import json
 import os
+import requests
 
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -13,9 +14,14 @@ class Command(BaseCommand):
     IMPORT_FILE = os.path.join(settings.BASE_DIR, "..", "data", "countries.json")
 
     def get_data(self):
-        with open(self.IMPORT_FILE) as f:
-            data = json.load(f)
-        return data
+        r = requests.get(
+            url = 'https://storage.googleapis.com/dcr-django-test/countries.json',
+            headers = {'Accept' : 'application/json'}
+        )
+        if r.status_code == 200:
+            return r.json()
+        else:
+            return {} # API returned no data
 
     def handle(self, *args, **options):
         data = self.get_data()
